@@ -1,0 +1,53 @@
+
+
+.platform-background{
+    -fx-background-color: #F9FEFF;
+
+}
+
+.nav-bar{
+   -fx-background-color: #ffffff;
+}
+
+
+.side-menu-background{
+    /* -fx-background-color: #15191f; */
+    -fx-background-color: #01161E;
+
+}
+
+
+.menu-item{
+    -fx-font-size: 16px;
+    -fx-text-fill: white;
+    -fx-text-align: center;
+    -fx-border-color: white;
+    -fx-border-width: 0.1;
+    -fx-border-right: 0;
+    -fx-border-style: solid hidden solid hidden;
+}
+
+.menu-item:hover{
+    -fx-background-color: #01171E;
+    -fx-text-fill: #e2442e;
+    -fx-cursor: hand;
+}
+
+
+.logout-btn{
+    -fx-background-color: #e2442e;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+}
+
+.time{
+
+}
+
+/*
+#F2EFEA
+#FC7753
+#66D7D1
+#403D58
+#DBD56E
+*/
