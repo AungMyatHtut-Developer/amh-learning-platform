@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class AMHLearningPlatform extends Application {
@@ -31,6 +32,7 @@ public class AMHLearningPlatform extends Application {
 
         primaryStage = stage;
 
+        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logo.png")));
         primaryStage.setTitle("AMH Learning Platform");
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);

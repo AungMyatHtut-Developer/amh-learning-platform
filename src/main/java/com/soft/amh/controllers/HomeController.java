@@ -1,18 +1,25 @@
 package com.soft.amh.controllers;
 
+import com.soft.amh.service.CourseService;
+import com.soft.amh.util.SharedBorderPane;
+import com.soft.amh.util.Tile;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.animation.TranslateTransition;
+import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.transform.Translate;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.TilePane;
+import javafx.scene.text.Font;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.util.Duration;
 
 import java.net.URL;
@@ -21,6 +28,8 @@ import java.util.Date;
 import java.util.ResourceBundle;
 
 public class HomeController implements Initializable {
+
+    private CourseService courseService;
 
     @FXML
     private Label accountBtn;
@@ -35,6 +44,9 @@ public class HomeController implements Initializable {
     private BorderPane borderPane;
 
     @FXML
+    private AnchorPane centerPane;
+
+    @FXML
     private Label dateTimeLabel;
 
     @FXML
@@ -42,6 +54,15 @@ public class HomeController implements Initializable {
 
     @FXML
     private Label homeBtn;
+
+    @FXML
+    private FlowPane iconFlowPane;
+
+    @FXML
+    private ImageView iconImage;
+
+    @FXML
+    private Label internetBtn;
 
     @FXML
     private Button logoutBtn;
@@ -56,16 +77,19 @@ public class HomeController implements Initializable {
     private Label noteBtn;
 
     @FXML
+    private ProgressBar progressBar;
+
+    @FXML
     private ImageView profileImage;
 
     @FXML
-    private Label tutorialBtn;
+    private Label showMenuBtn;
 
     @FXML
     private AnchorPane sideMenuPanel;
 
     @FXML
-    private AnchorPane centerPane;
+    private Label tutorialBtn;
 
     @FXML
     void onclickAccountBtn(MouseEvent event) {
@@ -78,19 +102,22 @@ public class HomeController implements Initializable {
     }
 
     @FXML
-    void onclickArticleBtn(MouseEvent event) {
-
-    }
-
-    @FXML
-    void onclickHelpBtn(MouseEvent event) {
-
-    }
-
-    @FXML
     void onclickHomeBtn(MouseEvent event) {
 
     }
+
+    @FXML
+    void onclickInternetBtn(MouseEvent event) {
+
+        WebView webView = new WebView();
+        WebEngine webEngine = webView.getEngine();
+
+        getProgressBarForWebView(webEngine);
+        webEngine.load("https://www.youtube.com");
+
+        borderPane.setCenter(webView);
+    }
+
 
     @FXML
     void onclickLogoutBtn(MouseEvent event) {
@@ -102,60 +129,68 @@ public class HomeController implements Initializable {
 
     }
 
-    @FXML
-    void onclickMinimizeBtn(MouseEvent event) {
 
-
-        if (minimizeBtn.getText().contentEquals("⭕")){
-            for(int i=0; i<2; i++){
-                Insets currentInset = BorderPane.getMargin(centerPane);
-
-                double newLeftMargin = 0;
-                BorderPane.setMargin(centerPane, new Insets(currentInset.getTop(),newLeftMargin,currentInset.getBottom(),currentInset.getRight()));
-            }
-
-
-
-            minimizeBtn.setPrefWidth(165);
-            minimizeBtn.setText("❌");
-        }else{
-            for(int i=0; i<2; i++){
-                Insets currentInset = BorderPane.getMargin(centerPane);
-
-                if(currentInset == null){
-                    currentInset = new Insets(0);
-                }
-
-
-                double newLeftMargin = 0 - 132.0;
-                BorderPane.setMargin(centerPane, new Insets(currentInset.getTop(),newLeftMargin,currentInset.getBottom(),currentInset.getRight()));
-            }
-
-            minimizeBtn.setPrefWidth(35);
-            minimizeBtn.setText("⭕");
-
-
-        }
-
-
-        borderPane.setCenter(centerPane);
-
-
-    }
 
     @FXML
     void onclickNoteBtn(MouseEvent event) {
 
     }
 
+
+    @FXML
+    void onclickArticleBtn(MouseEvent event) {
+        WebView webView = new WebView();
+        WebEngine webEngine = webView.getEngine();
+
+        getProgressBarForWebView(webEngine);
+        webEngine.load("https://www.newsinlevels.com/");
+
+        borderPane.setCenter(webView);
+    }
+
+    @FXML
+    void onclickHelpBtn(MouseEvent event) {
+        TextArea textArea = new TextArea();
+
+        Font centuryBurma = Font.loadFont(getClass().getResourceAsStream("/fonts/CenturyBurma.ttf"), 20);
+
+        textArea.setFont(centuryBurma);
+        textArea.setPrefWidth(500);
+        textArea.setPrefHeight(500);
+
+        borderPane.setCenter(textArea);
+    }
+
+    @FXML
+    void onclickMinimizeBtn(MouseEvent event) {
+
+    borderPane.getChildren().remove(sideMenuPanel);
+    addHideMenuButton();
+    }
+
+
     @FXML
     void onclickTutorialBtn(MouseEvent event) {
+        borderPane.setCenter(courseService.getCourseView());
+    }
 
+
+    @FXML
+    void onclickShowMenuBtn(MouseEvent event){
+        borderPane.setLeft(sideMenuPanel);
+        removeHideMenuButton();
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setupClock();
+        removeHideMenuButton();
+
+        progressBar.setVisible(false);
+        profileImage.setImage(new Image(getClass().getResourceAsStream("/img/MyProfile.jpeg")));
+
+        SharedBorderPane.setSharedBorderPane(borderPane);
+        courseService  = new CourseService();
     }
 
     private void setupClock() {
@@ -166,8 +201,35 @@ public class HomeController implements Initializable {
     }
 
     private void updateClock() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyy hh:mm:ss aaa");
         String formattedDate = dateFormat.format(new Date());
         dateTimeLabel.setText(formattedDate);
     }
+
+
+    private void removeHideMenuButton(){
+        iconFlowPane.getChildren().removeAll(showMenuBtn, iconImage);
+        iconFlowPane.getChildren().add(iconImage);
+    }
+
+    private void addHideMenuButton(){
+        iconFlowPane.getChildren().removeAll(showMenuBtn, iconImage);
+
+        iconFlowPane.getChildren().add(0, showMenuBtn);
+        iconFlowPane.getChildren().add(1, iconImage);
+    }
+
+    private void getProgressBarForWebView(WebEngine webEngine){
+
+        progressBar.progressProperty().bind(webEngine.getLoadWorker().progressProperty());
+
+        webEngine.getLoadWorker().stateProperty().addListener((observable,oldValue,newValue) -> {
+            if(newValue == Worker.State.SUCCEEDED){
+                progressBar.setVisible(false);
+            }else{
+                progressBar.setVisible(true);
+            }
+        });
+    }
+
 }

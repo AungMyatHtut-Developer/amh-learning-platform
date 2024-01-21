@@ -18,6 +18,7 @@ public class FXMLLoaderHelper {
         try {
             return loader.load();
         } catch (IOException e) {
+            e.printStackTrace();
             System.out.println("Error : FXML could file couldn't load: "+viewName);
         }
 

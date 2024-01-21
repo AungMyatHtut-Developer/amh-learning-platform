@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class LoginController {
@@ -24,7 +25,7 @@ public class LoginController {
         Stage stage = new AMHLearningPlatform().getPrimaryStage();
 
         stage.setScene(new Scene((Parent) node));
-        stage.setMinWidth(900);
+        stage.setMinWidth(1000);
         stage.setMinHeight(600);
         stage.setResizable(true);
 

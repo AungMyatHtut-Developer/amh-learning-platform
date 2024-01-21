@@ -1,8 +1,7 @@
 
 
 .platform-background{
-    -fx-background-color: #F9FEFF;
-
+    -fx-background-color: #F1FFFF;
 }
 
 .nav-bar{
@@ -11,9 +10,7 @@
 
 
 .side-menu-background{
-    /* -fx-background-color: #15191f; */
     -fx-background-color: #01161E;
-
 }
 
 
@@ -33,7 +30,6 @@
     -fx-cursor: hand;
 }
 
-
 .logout-btn{
     -fx-background-color: #e2442e;
     -fx-text-fill: white;
@@ -41,8 +37,29 @@
 }
 
 .time{
-
+    -fx-font-weight: bold;
 }
+
+.menu-hidden-btn{
+    -fx-text-fill: black;
+}
+
+.menu-hidden-btn:hover{
+    -fx-text-fill: #e2442e;
+    -fx-cursor: hand;
+}
+
+.profile-img{
+    -fx-border-radius: 30px;
+}
+
+.progress-bar{
+    -fx-accent: lightblue;
+    -fx-border-style: none;
+}
+
+
+
 
 /*
 #F2EFEA

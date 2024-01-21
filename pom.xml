@@ -50,6 +50,13 @@
             <version>3.0.0-beta1</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-web -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-web</artifactId>
+            <version>18</version>
+        </dependency>
+
 
     </dependencies>
 
