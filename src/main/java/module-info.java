@@ -3,6 +3,7 @@ module org.amh.learningplatform.amhlearningplatform {
     requires javafx.fxml;
     requires javafx.web;
     requires javafx.media;
+    requires org.fxmisc.richtext;
     requires org.controlsfx.controls;
     requires org.apache.logging.log4j;
 

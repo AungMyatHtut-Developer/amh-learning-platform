@@ -85,7 +85,14 @@ public class VideoPlayerController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        mediaVideo = new Media(getClass().getResource("/video/lesson2.mp4").toString());
+
+//        mediaVideo = new Media(getClass().getResource("/video/lesson3.mp4").toString());
+
+
+//
+        mediaVideo = new Media("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4");
+
+//        mediaVideo = new Media("https://drive.google.com/file/d/1QSOwE_1BlHBnmZ6mF59ftLMdqpcaYVJI/view?usp=drive_link");
         mpVideo = new MediaPlayer(mediaVideo);
         mvVideo.setMediaPlayer(mpVideo);
 
@@ -117,6 +124,8 @@ public class VideoPlayerController implements Initializable {
                 }
             }
         });
+
+
 
         hboxVolume.getChildren().remove(sliderVolume);
         mpVideo.volumeProperty().bindBidirectional(sliderVolume.valueProperty());

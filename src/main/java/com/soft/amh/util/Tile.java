@@ -4,15 +4,16 @@ import com.soft.amh.service.CourseService;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.image.Image;
+import javafx.scene.control.Slider;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.TilePane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 public class Tile extends VBox {
 
@@ -67,7 +68,17 @@ public class Tile extends VBox {
 
                 anchorPane.getChildren().add(vBox);
 
-                SharedBorderPane.getSharedBorderPane().setCenter(anchorPane);
+//                SharedBorderPane.getSharedBorderPane().setCenter(anchorPane);
+//                SharedBorderPane.getSharedBorderPane().getLeft().toFront();
+
+
+                Stage stage = new Stage();
+
+                stage.setScene(new Scene(anchorPane));
+                stage.setTitle("AMH Platform Video Player");
+                stage.show();
+
+
             }else{
                 SharedBorderPane.getSharedBorderPane().setCenter(new CourseService().getCourseLessonView());
             }
@@ -87,4 +98,5 @@ public class Tile extends VBox {
         setCursor(Cursor.DEFAULT);
         setStyle(null);
     }
+
 }
