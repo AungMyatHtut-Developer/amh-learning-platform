@@ -4,20 +4,22 @@ import com.soft.amh.service.CourseService;
 import com.soft.amh.util.SharedBorderPane;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.TilePane;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.util.Duration;
@@ -124,19 +126,25 @@ public class HomeController implements Initializable {
 
     }
 
+    private TabPane tabPane;
+    private ComboBox<Integer> fontSizeComboBox;
+    private InlineCssTextArea noteEditor;
+    private InlineCssTextArea lineNumbers;
+    private Slider rightMarginSlider;
+    private TilePane footer;
+    private Label lineNumber;
+    private Label line = new Label("Total Line: ");
+
     @FXML
     void onclickMessageBtn(MouseEvent event) {
 
         System.out.println(noteEditor.getText());
-        System.out.println(noteEditor2.getText());
+//        System.out.println(noteEditor2.getText());
+        int size = noteEditor.getCurrentParagraph();
+        System.out.println("line numbers "+size);
     }
 
 
-
-    private TabPane tabPane;
-    private ComboBox<Integer> fontSizeComboBox;
-    private InlineCssTextArea noteEditor2;
-    private InlineCssTextArea noteEditor;
     @FXML
     void onclickNoteBtn(MouseEvent event) {
 
@@ -144,59 +152,58 @@ public class HomeController implements Initializable {
                 .getResourceAsStream("/fonts/CenturyBurma.ttf"), 20);
         System.out.println(" font : "+centuryBurma.getFamily());
         tabPane = new TabPane();
+
         noteEditor = new InlineCssTextArea();
         noteEditor.setStyle("-fx-font-size: 25px;"+"-fx-font-family: '"+centuryBurma.getFamily()+"'");
 
         noteEditor.setWrapText(true);
 
-        Tab tab1 = new Tab("Note 1");
-        tab1.setContent(noteEditor);
+        noteEditor.multiPlainChanges().subscribe(change ->{
 
-
-        Image image = new Image(getClass().getResource("/img/MyProfile.jpeg").toString());
-
-        ImageView imageView = new ImageView(image);
-        imageView.setFitHeight(150);
-        imageView.setFitWidth(150);
-
-        imageView.setOnMouseEntered(event1 -> {
-            imageView.setStyle("-fx-cursor: hand;");
-                }
-        );
-
-        imageView.setOnMouseExited(event1 -> {
-                    imageView.setStyle("-fx-cursor: default;");
-                }
-        );
-
-        noteEditor2 = new InlineCssTextArea();
-        Tab tab2 = new Tab("Note 2");
-        tab2.setContent(noteEditor2);
-
-        noteEditor2.setStyle("-fx-font-size: 18px;"+"-fx-font-family: '"+centuryBurma.getFamily()+"'");
-        noteEditor2.setWrapText(true);
-        noteEditor2.appendText("\uD83D\uDCF7");
-        noteEditor2.appendText("ma;io;ejiaf;ehfia;heif;haie;fhia;ehfi;aeh");
-
-        noteEditor2.setParagraphGraphicFactory(line -> {
-            // Check if this line contains a special marker that indicates an image
-                return imageView; // Return the ImageView for the line containing the marke
         });
 
+        noteEditor.textProperty().addListener((observableValue, s, t1) -> {
+            updateLineNumberTextArea(noteEditor);
+        });
+
+        lineNumbers = new InlineCssTextArea();
+        lineNumbers.setStyle("-fx-font-size: 25px;"+"-fx-font-family: '"+centuryBurma.getFamily()+"'");
+
+        lineNumbers.setWrapText(true);
+
+
+        HBox.setHgrow(noteEditor, Priority.ALWAYS);
+
+        Tab tab1 = new Tab("Note 1");
+        tab1.setContent(noteEditor);
 
         fontSizeComboBox = createFontSizeComboBox();
         TilePane controlPane = new TilePane();
         controlPane.getChildren().add(fontSizeComboBox);
 
 
-        tabPane.getTabs().addAll(tab1,tab2);
+        tabPane.getTabs().addAll(tab1);
 
-        borderPane.setTop(controlPane);
-        borderPane.setCenter(tabPane);
+        footer = new TilePane();
+        lineNumber = new Label();
+        footer.getChildren().addAll(line,lineNumber);
+
+        BorderPane noteBorderPane = new BorderPane();
+        noteBorderPane.setTop(controlPane);
+        noteBorderPane.setCenter(tabPane);
+        noteBorderPane.setBottom(footer);
+
+        borderPane.setCenter(noteBorderPane);
     }
 
+    public void updateLineNumberTextArea(InlineCssTextArea contentTextArea){
+        int lineCount = contentTextArea.getParagraphs().size();
+        lineNumber.setText(String.valueOf(lineCount));
+    }
+
+
     private ComboBox<Integer> createFontSizeComboBox() {
-        ComboBox<Integer> fontSizeComboBox = new ComboBox<>(FXCollections.observableArrayList(12, 14, 16, 18, 20, 25, 30));
+        ComboBox<Integer> fontSizeComboBox = new ComboBox<>(FXCollections.observableArrayList(12, 18, 20, 25, 30, 47, 72));
         fontSizeComboBox.setValue(14); // Default font size
         fontSizeComboBox.setOnAction(event -> {
             int selectedFontSize = fontSizeComboBox.getValue();

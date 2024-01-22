@@ -63,6 +63,22 @@
             <version>0.11.2</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.reactfx/reactfx -->
+        <dependency>
+            <groupId>org.reactfx</groupId>
+            <artifactId>reactfx</artifactId>
+            <version>2.0-M5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.fxmisc.flowless</groupId>
+            <artifactId>flowless</artifactId>
+            <version>0.6</version>
+        </dependency>
+        <!-- Thanks for using https://jar-download.com -->
+
+
+
 
     </dependencies>
 

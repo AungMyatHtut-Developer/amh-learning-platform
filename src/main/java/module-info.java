@@ -6,6 +6,8 @@ module org.amh.learningplatform.amhlearningplatform {
     requires org.fxmisc.richtext;
     requires org.controlsfx.controls;
     requires org.apache.logging.log4j;
+    requires reactfx;
+    requires flowless;
 
     opens com.soft.amh to javafx.fxml;
     opens com.soft.amh.controllers to javafx.fxml;
